@@ -46,7 +46,7 @@ Szczęśliwa ścieżka (happy path):
 1. W bazie danych nie ma żadnych książek.
 2. Użytkownik wykonuje żądanie `GET /books` bez JWT, system zwraca status **401 Unauthorized**.
 3. Użytkownik wykonuje żądanie `POST /register` z JSON `{"username: "user", "password": "pass123"}`, system rejestruje
-   użytkownika i zwraca status **200 OK**.
+   użytkownika i zwraca status **201 Created**.
 4. Użytkownik wykonuje żądanie `POST /token` z JSON `{"username: "user", "password": "pass123"}`, system zwraca JWT
    `AAAA.BBBB.CCC` oraz status **200 OK**.
 5. Użytkownik wykonuje żądanie `GET /books` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system zwraca pustą

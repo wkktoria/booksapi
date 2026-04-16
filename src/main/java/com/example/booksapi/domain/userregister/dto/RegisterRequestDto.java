@@ -1,12 +1,11 @@
-package com.example.booksapi.infrastructure.userregister.dto;
+package com.example.booksapi.domain.userregister.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
 public record RegisterRequestDto(
-        @NotNull
+        @NotBlank
         String username,
 
         @NotBlank

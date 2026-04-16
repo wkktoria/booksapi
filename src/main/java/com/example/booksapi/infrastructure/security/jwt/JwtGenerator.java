@@ -2,7 +2,6 @@ package com.example.booksapi.infrastructure.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.booksapi.infrastructure.security.SecurityUser;
 import com.example.booksapi.infrastructure.security.jwt.dto.TokenRequestDto;
 import com.example.booksapi.infrastructure.security.jwt.dto.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
@@ -31,7 +32,7 @@ class JwtGenerator {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(requestDto.username(), requestDto.password())
         );
-        SecurityUser user = (SecurityUser) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         if (user == null) {
             log.warn("Could not authenticate user");
             return TokenResponseDto.builder()
@@ -43,7 +44,7 @@ class JwtGenerator {
                 .build();
     }
 
-    private String createToken(final SecurityUser user) {
+    private String createToken(final User user) {
         String secretKey = properties.secret();
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         Instant now = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
@@ -54,7 +55,9 @@ class JwtGenerator {
                 .withIssuedAt(now)
                 .withExpiresAt(expiresAt)
                 .withIssuer(issuer)
-                .withClaim("roles", user.getAuthoritiesAsString())
+                .withClaim("roles", user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList())
                 .sign(algorithm);
     }
 
