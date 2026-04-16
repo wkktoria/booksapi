@@ -20,7 +20,7 @@ import java.util.HashSet;
 @Getter
 @Setter
 @Builder
-class User {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,7 +36,7 @@ class User {
 
     private boolean enabled = true;
 
-    User(final String username, final String password, final Collection<String> authorities) {
+    public User(final String username, final String password, final Collection<String> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
