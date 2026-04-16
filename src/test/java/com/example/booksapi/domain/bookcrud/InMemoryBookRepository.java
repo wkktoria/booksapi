@@ -1,6 +1,11 @@
 package com.example.booksapi.domain.bookcrud;
 
+import org.springframework.data.domain.Pageable;
+
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,6 +26,16 @@ class InMemoryBookRepository implements BookRepository {
         book.setId(index);
         database.put(index, book);
         return book;
+    }
+
+    @Override
+    public Set<Book> findAll(final Pageable pageable) {
+        return new HashSet<>(database.values());
+    }
+
+    @Override
+    public Optional<Book> findById(final Long id) {
+        return Optional.ofNullable(database.get(id));
     }
 
 }

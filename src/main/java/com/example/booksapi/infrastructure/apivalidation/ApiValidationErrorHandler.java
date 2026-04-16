@@ -1,6 +1,7 @@
 package com.example.booksapi.infrastructure.apivalidation;
 
 import com.example.booksapi.domain.bookcrud.BookExistsException;
+import com.example.booksapi.domain.bookcrud.BookNotFoundException;
 import com.example.booksapi.domain.userregister.UserExistsException;
 import com.example.booksapi.domain.userregister.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,16 @@ class ApiValidationErrorHandler {
     @ExceptionHandler(BookExistsException.class)
     @ResponseBody
     ApiValidationErrorDto handleBookExistsException(final BookExistsException exception) {
+        return ApiValidationErrorDto.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.CONFLICT)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(BookNotFoundException.class)
+    @ResponseBody
+    ApiValidationErrorDto handleBookNotFoundException(final BookNotFoundException exception) {
         return ApiValidationErrorDto.builder()
                 .message(exception.getMessage())
                 .status(HttpStatus.CONFLICT)

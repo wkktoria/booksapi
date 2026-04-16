@@ -1,8 +1,10 @@
 package com.example.booksapi.domain.bookcrud;
 
+import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
 import com.example.booksapi.domain.bookcrud.dto.CreateBookRequestDto;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
@@ -10,8 +12,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 class BookCrudFacadeTest {
 
     BookRepository bookRepository = new InMemoryBookRepository();
+    BookRetriever bookRetriever = new BookRetriever(bookRepository);
     BookCrudFacade bookCrudFacade = new BookCrudFacade(
-            new BookAdder(bookRepository, new BookRetriever(bookRepository))
+            new BookAdder(bookRepository, bookRetriever),
+            bookRetriever
     );
 
     @Test
@@ -44,6 +48,64 @@ class BookCrudFacadeTest {
         // then
         assertThat(throwable).isInstanceOf(BookExistsException.class)
                 .hasMessageContaining("exists");
+    }
+
+    @Test
+    void should_return_empty_set_when_no_books_saved() {
+        // given
+
+        // when
+        AllBooksResponseDto responseDto = bookCrudFacade.findAllBooks(Pageable.unpaged());
+
+        // then
+        assertThat(responseDto.books().isEmpty()).isTrue();
+    }
+
+    @Test
+    void should_return_set_of_books_when_there_are_saved_books() {
+        // given
+        String title = "Book";
+        CreateBookRequestDto requestDto = CreateBookRequestDto.builder()
+                .title(title)
+                .build();
+        BookDto bookDto = bookCrudFacade.createBook(requestDto);
+
+        // when
+        AllBooksResponseDto responseDto = bookCrudFacade.findAllBooks(Pageable.unpaged());
+
+        // then
+        assertThat(responseDto.books().isEmpty()).isFalse();
+        assertThat(responseDto.books().contains(bookDto)).isTrue();
+    }
+
+    @Test
+    void should_throw_exception_when_book_not_found_by_id() {
+        // given
+
+        // when
+        Throwable throwable = catchThrowable(() -> bookCrudFacade.findBookById(1L));
+
+        // then
+        assertThat(throwable).isInstanceOf(BookNotFoundException.class)
+                .hasMessageContaining("not found");
+    }
+
+    @Test
+    void should_return_book_by_id_when_book_exists() {
+        // given
+        String title = "Book";
+        CreateBookRequestDto requestDto = CreateBookRequestDto.builder()
+                .title(title)
+                .build();
+        BookDto bookDto = bookCrudFacade.createBook(requestDto);
+
+        // when
+        BookDto responseBookDto = bookCrudFacade.findBookById(bookDto.id());
+
+        // then
+        assertThat(responseBookDto).isNotNull();
+        assertThat(responseBookDto.id()).isEqualTo(bookDto.id());
+        assertThat(responseBookDto.title()).isEqualTo(bookDto.title());
     }
 
 }
