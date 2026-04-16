@@ -1,38 +1,36 @@
 package com.example.booksapi.infrastructure.security;
 
-import com.example.booksapi.domain.userregister.User;
-import com.example.booksapi.domain.userregister.UserRepository;
+import com.example.booksapi.domain.userregister.UserRegisterFacade;
+import com.example.booksapi.domain.userregister.dto.RegisterRequestDto;
+import com.example.booksapi.domain.userregister.dto.RegisterResponseDto;
+import com.example.booksapi.domain.userregister.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 @Log4j2
 class UserDetailsServiceImpl implements UserDetailsManager {
 
-    public static final String DEFAULT_USER_ROLE = "ROLE_USER";
-
-    private final UserRepository userRepository;
+    private final UserRegisterFacade userRegisterFacade;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void createUser(final UserDetails user) {
-        if (userExists(user.getUsername())) {
-            log.warn("User could not be saved - user with username='{}' already exists", user.getUsername());
-            throw new UserExistsException("User not saved - already exists");
-        }
-
         String encodedPassword = passwordEncoder.encode(user.getPassword());
-        User createdUser = new User(user.getUsername(), encodedPassword, List.of(DEFAULT_USER_ROLE));
-        User savedUser = userRepository.save(createdUser);
-        log.info("User saved with id={}", savedUser.getId());
+        RegisterResponseDto responseDto = userRegisterFacade.register(
+                RegisterRequestDto.builder()
+                        .username(user.getUsername())
+                        .password(encodedPassword)
+                        .build()
+        );
+        log.info("User saved with id={}", responseDto.id());
     }
 
     @Override
@@ -52,14 +50,19 @@ class UserDetailsServiceImpl implements UserDetailsManager {
 
     @Override
     public boolean userExists(final String username) {
-        return userRepository.existsByUsername(username);
+        return userRegisterFacade.existsByUsername(username);
     }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .map(SecurityUser::new)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        UserDto userDto = userRegisterFacade.findByUsername(username);
+        return new org.springframework.security.core.userdetails.User(
+                userDto.username(),
+                userDto.password(),
+                userDto.roles().stream()
+                        .map(authority -> (GrantedAuthority) () -> authority)
+                        .toList()
+        );
     }
 
 }

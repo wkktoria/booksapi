@@ -1,4 +1,4 @@
-package com.example.booksapi.infrastructure.security;
+package com.example.booksapi.domain.userregister;
 
 public class UserExistsException extends RuntimeException {
 
