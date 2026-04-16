@@ -20,9 +20,9 @@
 
 ### Bezpieczeństwo
 
-- [ ] Autoryzacja użytkowników przy użyciu tokenów JWT.
+- [X] Autoryzacja użytkowników przy użyciu tokenów JWT.
 
-- [ ] Haszowanie haseł użytkowników przed zapisaniem ich w bazie danych.
+- [X] Haszowanie haseł użytkowników przed zapisaniem ich w bazie danych.
 
 - [ ] Zabezpieczenie endpointów aplikacji przed atakami typu SQL Injection.
 
