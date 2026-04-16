@@ -1,5 +1,10 @@
 # Books API
 
+- [Wymagania](#wymagania)
+    - [Podstawowe funkcjonalności](#podstawowe-funkcjonalności)
+    - [Bezpieczeństwo](#bezpieczeństwo)
+- [Technologie](#technologie)
+
 ## Wymagania
 
 ### Podstawowe funkcjonalności
