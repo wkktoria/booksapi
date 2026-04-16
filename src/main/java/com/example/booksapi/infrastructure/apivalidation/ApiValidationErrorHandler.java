@@ -52,7 +52,7 @@ class ApiValidationErrorHandler {
     ApiValidationErrorDto handleBookNotFoundException(final BookNotFoundException exception) {
         return ApiValidationErrorDto.builder()
                 .message(exception.getMessage())
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.NOT_FOUND)
                 .build();
     }
 
