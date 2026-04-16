@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres:18
+    restart: always
+    ports:
+      - "54322:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-user}
+      POSTGRES_DB: ${POSTGRES_DB:-books}
