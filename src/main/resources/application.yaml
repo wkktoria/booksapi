@@ -16,3 +16,8 @@ spring:
     enabled: true
     locations: classpath:db.migration/general,classpath:db.migration/inserts
     schemas: public
+auth:
+  jwt:
+    secret: ${JWT_SECRET:3f46afdd68a5ccef651212f60986f1a8bd918d582eca67e15ddd1d4e7620b24a}
+    expiration-days: 30
+    issuer: booksapi
