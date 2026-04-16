@@ -1,5 +1,7 @@
 package com.example.booksapi.infrastructure.apivalidation;
 
+import com.example.booksapi.domain.bookcrud.BookExistsException;
+import com.example.booksapi.domain.bookcrud.BookNotFoundException;
 import com.example.booksapi.domain.userregister.UserExistsException;
 import com.example.booksapi.domain.userregister.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,27 @@ class ApiValidationErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseBody
-    ApiValidationErrorDto handleUserNotFound(final UserNotFoundException exception) {
+    ApiValidationErrorDto handleUserNotFoundException(final UserNotFoundException exception) {
+        return ApiValidationErrorDto.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.CONFLICT)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(BookExistsException.class)
+    @ResponseBody
+    ApiValidationErrorDto handleBookExistsException(final BookExistsException exception) {
+        return ApiValidationErrorDto.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.CONFLICT)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(BookNotFoundException.class)
+    @ResponseBody
+    ApiValidationErrorDto handleBookNotFoundException(final BookNotFoundException exception) {
         return ApiValidationErrorDto.builder()
                 .message(exception.getMessage())
                 .status(HttpStatus.CONFLICT)
@@ -37,7 +59,7 @@ class ApiValidationErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    ApiValidationErrorDto handleMethodArgumentNotValid(final MethodArgumentNotValidException exception) {
+    ApiValidationErrorDto handleMethodArgumentNotValidException(final MethodArgumentNotValidException exception) {
         List<String> errors = exception.getBindingResult()
                 .getFieldErrors()
                 .stream()
