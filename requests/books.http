@@ -24,3 +24,8 @@ Authorization: Bearer AAAA.BBBB.CCC
 {
   "title": "Clean Architecture"
 }
+
+###
+DELETE http://localhost:8080/books/1
+Accept: application/json
+Authorization: Bearer AAAA.BBBB.CCC

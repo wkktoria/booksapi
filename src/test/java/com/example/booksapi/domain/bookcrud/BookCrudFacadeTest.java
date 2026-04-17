@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 class BookCrudFacadeTest {
@@ -17,7 +18,8 @@ class BookCrudFacadeTest {
     BookCrudFacade bookCrudFacade = new BookCrudFacade(
             new BookAdder(bookRepository, bookRetriever),
             bookRetriever,
-            new BookUpdater(bookRetriever)
+            new BookUpdater(bookRetriever),
+            new BookDeleter(bookRetriever, bookRepository)
     );
 
     @Test
@@ -128,6 +130,23 @@ class BookCrudFacadeTest {
         assertThat(responseBookDto).isNotNull();
         assertThat(responseBookDto.id()).isEqualTo(bookDto.id());
         assertThat(responseBookDto.title()).isEqualTo("Updated Book");
+    }
+
+    @Test
+    void should_delete_book_by_id() {
+        // given
+        String title = "Book";
+        CreateBookRequestDto requestDto = CreateBookRequestDto.builder()
+                .title(title)
+                .build();
+        BookDto bookDto = bookCrudFacade.createBook(requestDto);
+
+        // when
+        bookCrudFacade.deleteBook(bookDto.id());
+
+        // then
+        assertThatThrownBy(() -> bookCrudFacade.findBookById(bookDto.id()))
+                .isInstanceOf(BookNotFoundException.class);
     }
 
 }

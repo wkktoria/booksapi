@@ -3,6 +3,7 @@ package com.example.booksapi.domain.bookcrud;
 import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
 import com.example.booksapi.domain.bookcrud.dto.CreateBookRequestDto;
+import com.example.booksapi.domain.bookcrud.dto.DeleteBookResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.UpdateBookRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +23,7 @@ public class BookCrudFacade {
     private final BookAdder bookAdder;
     private final BookRetriever bookRetriever;
     private final BookUpdater bookUpdater;
+    private final BookDeleter bookDeleter;
 
     public BookDto createBook(final CreateBookRequestDto requestDto) {
         Book createdBook = bookAdder.addBook(requestDto.title());
@@ -46,6 +48,13 @@ public class BookCrudFacade {
     public BookDto updateBook(final Long id, final UpdateBookRequestDto requestDto) {
         Book updatedBook = bookUpdater.update(id, requestDto.title());
         return mapFromBookToBookDto(updatedBook);
+    }
+
+    public DeleteBookResponseDto deleteBook(final Long id) {
+        bookDeleter.deleteById(id);
+        return DeleteBookResponseDto.builder()
+                .message("Book has been deleted successfully")
+                .build();
     }
 
 }
