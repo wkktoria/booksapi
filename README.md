@@ -10,13 +10,13 @@
 
 ### Podstawowe funkcjonalności
 
-- [ ] Pobieranie listy książek z bazy danych.
+- [X] Pobieranie listy książek z bazy danych.
 
-- [ ] Dodawanie nowych książek do bazy danych.
+- [X] Dodawanie nowych książek do bazy danych.
 
-- [ ] Edycja istniejących książek w bazie danych.
+- [X] Edycja istniejących książek w bazie danych.
 
-- [ ] Usuwanie książek z bazy danych.
+- [X] Usuwanie książek z bazy danych.
 
 ### Bezpieczeństwo
 
@@ -24,7 +24,7 @@
 
 - [X] Haszowanie haseł użytkowników przed zapisaniem ich w bazie danych.
 
-- [ ] Zabezpieczenie endpointów aplikacji przed atakami typu SQL Injection.
+- [X] Zabezpieczenie endpointów aplikacji przed atakami typu SQL Injection.
 
 ## Technologie
 
@@ -32,7 +32,7 @@
 - Spring Boot (Spring Web, Spring Security, Spring Data JPA)
 - Relacyjna baza danych (PostgreSQL) + Flyway
 - RestTemplate
-- MockMvc, SpringBootTest
+- MockMvc, SpringBootTest, WireMock
 - JUnit, Mockito, AssertJ
 - Testcontainers
 - Lombok
@@ -57,8 +57,8 @@ Szczęśliwa ścieżka (happy path):
    danych (`id=2`) i zwraca status **201 Created**.
 8. Użytkownik wykonuje żądanie `GET /books` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system zwraca listę 2
    książek (`id=1` i `id=2`) oraz status **200 OK**.
-9. Użytkownik wykonuje żądanie `GET /books/1` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system zwraca dane
-   książki (`id=1`) oraz status `200 OK`.
+9. Użytkownik wykonuje żądanie `GET /books/1` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system pobiera
+   informacje na temat książki (`id=1`) z zewnętrznego API zwraca dane oraz status `200 OK`.
 10. Użytkownik wykonuje żądanie `GET /books/999` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system zwraca
     status **404 Not Found**.
 11. Użytkownik wykonuje żądanie `PUT /books/1` z JSON `{"title: "Clean Architecture"}` oraz nagłówkiem
