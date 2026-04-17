@@ -3,10 +3,12 @@ package com.example.booksapi.domain.bookcrud;
 import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
 import com.example.booksapi.domain.bookcrud.dto.CreateBookRequestDto;
+import com.example.booksapi.domain.bookcrud.dto.UpdateBookRequestDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
 
 class BookCrudFacadeTest {
@@ -15,7 +17,9 @@ class BookCrudFacadeTest {
     BookRetriever bookRetriever = new BookRetriever(bookRepository);
     BookCrudFacade bookCrudFacade = new BookCrudFacade(
             new BookAdder(bookRepository, bookRetriever),
-            bookRetriever
+            bookRetriever,
+            new BookUpdater(bookRetriever),
+            new BookDeleter(bookRetriever, bookRepository)
     );
 
     @Test
@@ -106,6 +110,43 @@ class BookCrudFacadeTest {
         assertThat(responseBookDto).isNotNull();
         assertThat(responseBookDto.id()).isEqualTo(bookDto.id());
         assertThat(responseBookDto.title()).isEqualTo(bookDto.title());
+    }
+
+    @Test
+    void should_update_book_title() {
+        // given
+        String title = "Book";
+        CreateBookRequestDto requestDto = CreateBookRequestDto.builder()
+                .title(title)
+                .build();
+        BookDto bookDto = bookCrudFacade.createBook(requestDto);
+
+        // when
+        BookDto responseBookDto = bookCrudFacade.updateBook(bookDto.id(), UpdateBookRequestDto.builder()
+                .title("Updated Book")
+                .build());
+
+        // then
+        assertThat(responseBookDto).isNotNull();
+        assertThat(responseBookDto.id()).isEqualTo(bookDto.id());
+        assertThat(responseBookDto.title()).isEqualTo("Updated Book");
+    }
+
+    @Test
+    void should_delete_book_by_id() {
+        // given
+        String title = "Book";
+        CreateBookRequestDto requestDto = CreateBookRequestDto.builder()
+                .title(title)
+                .build();
+        BookDto bookDto = bookCrudFacade.createBook(requestDto);
+
+        // when
+        bookCrudFacade.deleteBook(bookDto.id());
+
+        // then
+        assertThatThrownBy(() -> bookCrudFacade.findBookById(bookDto.id()))
+                .isInstanceOf(BookNotFoundException.class);
     }
 
 }

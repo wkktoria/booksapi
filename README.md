@@ -64,6 +64,6 @@ Szczęśliwa ścieżka (happy path):
 11. Użytkownik wykonuje żądanie `PUT /books/1` z JSON `{"title: "Clean Architecture"}` oraz nagłówkiem
     `Authorization: Bearer AAAA.BBBB.CCC`, system aktualizuje książkę i zwraca jej dane (`id=1`) oraz status **200 OK**.
 12. Użytkownik wykonuje żądanie `DELETE /books/1` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system usuwa
-    książkę z bazy danych i zwraca status **204 No Content**.
+    książkę z bazy danych i zwraca status **200 OK**.
 13. Użytkownik wykonuje żądanie `GET /books` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system zwraca listę 1
     książki (`id=2`) oraz status **200 OK**.

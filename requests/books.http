@@ -1,0 +1,31 @@
+GET http://localhost:8080/books
+Accept: application/json
+Authorization: Bearer AAAA.BBBB.CCC
+
+###
+GET http://localhost:8080/books/1
+Accept: application/json
+Authorization: Bearer AAAA.BBBB.CCC
+
+###
+POST http://localhost:8080/books
+Content-Type: application/json
+Authorization: Bearer AAAA.BBBB.CCC
+
+{
+  "title": "Clean Code"
+}
+
+###
+PUT http://localhost:8080/books/1
+Content-Type: application/json
+Authorization: Bearer AAAA.BBBB.CCC
+
+{
+  "title": "Clean Architecture"
+}
+
+###
+DELETE http://localhost:8080/books/1
+Accept: application/json
+Authorization: Bearer AAAA.BBBB.CCC

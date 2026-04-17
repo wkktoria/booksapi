@@ -38,4 +38,9 @@ class InMemoryBookRepository implements BookRepository {
         return Optional.ofNullable(database.get(id));
     }
 
+    @Override
+    public void deleteById(final Long id) {
+        database.remove(id);
+    }
+
 }
