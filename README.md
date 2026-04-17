@@ -51,10 +51,12 @@ Szczęśliwa ścieżka (happy path):
    `AAAA.BBBB.CCC` oraz status **200 OK**.
 5. Użytkownik wykonuje żądanie `GET /books` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system zwraca pustą
    listę książek oraz status **200 OK**.
-6. Użytkownik wykonuje żądanie `POST /books` z JSON `{"title: "Clean Code"}`, system zapisuje książkę w bazie danych (
-   `id=1`) i zwraca status **201 Created**.
-7. Użytkownik wykonuje żądanie `POST /books` z JSON `{"title: "Effective Java"}`, system zapisuje książkę w bazie
-   danych (`id=2`) i zwraca status **201 Created**.
+6. Użytkownik wykonuje żądanie `POST /books` z JSON `{"title: "Clean Code"}` oraz nagłówkiem
+   `Authorization: Bearer AAAA.BBBB.CCC`, system zapisuje książkę w bazie danych (`id=1`) i zwraca status **201 Created
+   **.
+7. Użytkownik wykonuje żądanie `POST /books` z JSON `{"title: "Effective Java"}` oraz nagłówkiem
+   `Authorization: Bearer AAAA.BBBB.CCC`, system zapisuje książkę w bazie danych (`id=2`) i zwraca status **201 Created
+   **.
 8. Użytkownik wykonuje żądanie `GET /books` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system zwraca listę 2
    książek (`id=1` i `id=2`) oraz status **200 OK**.
 9. Użytkownik wykonuje żądanie `GET /books/1` z nagłówkiem `Authorization: Bearer AAAA.BBBB.CCC`, system pobiera
