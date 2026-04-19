@@ -1,10 +1,41 @@
 # Books API
 
+- [Opis](#opis)
+- [Uruchamianie](#uruchamianie)
 - [Wymagania](#wymagania)
     - [Podstawowe funkcjonalności](#podstawowe-funkcjonalności)
     - [Bezpieczeństwo](#bezpieczeństwo)
 - [Technologie](#technologie)
 - [Scenariusz](#scenariusz)
+
+## Opis
+
+API do zarządzania biblioteką, które umożliwia użytkownikom dodawanie, przeglądanie i edycję książek.
+Aplikacja korzysta z REST API, aby pobierać i wysyłać dane do bazy.
+W bazie danych są przechowywane jedynie identyfikatory oraz tytuły książek dodatkowe informacje o książkach są pobierane
+z [Open Library’s API](https://openlibrary.org/developers/api).
+
+Aplikacja uruchamia się na porcie `:8080` i udostępnia Swagger UI pod adresem `/swagger-ui/index.html`.
+
+## Uruchamianie
+
+Wymagania:
+
+- Docker & Docker Compose (do uruchomienia bazy danych)
+- Java 21+
+- Maven
+
+Uruchomienie bazy danych:
+
+```shell
+docker compose up -d
+```
+
+Uruchomienie API:
+
+```shell
+./mvnw spring-boot:run
+```
 
 ## Wymagania
 
