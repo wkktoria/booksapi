@@ -1,5 +1,6 @@
 package com.example.booksapi.domain.bookcrud;
 
+import com.example.booksapi.infrastructure.bookinfofetcher.http.BookInfoClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;

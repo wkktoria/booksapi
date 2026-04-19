@@ -4,8 +4,10 @@ import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
 import com.example.booksapi.domain.bookcrud.dto.CreateBookRequestDto;
 import com.example.booksapi.domain.bookcrud.dto.UpdateBookRequestDto;
+import com.example.booksapi.infrastructure.bookinfofetcher.http.BookInfoClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
