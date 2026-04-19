@@ -3,6 +3,7 @@ package com.example.booksapi.feature;
 import com.example.booksapi.BaseIntegrationTest;
 import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
+import com.example.booksapi.domain.bookcrud.dto.BookWithDetailsDto;
 import com.example.booksapi.domain.userregister.dto.RegisterResponseDto;
 import com.example.booksapi.infrastructure.security.jwt.dto.TokenResponseDto;
 import org.junit.jupiter.api.Test;
@@ -130,12 +131,12 @@ class UserWantsToManageBooksIntegrationTest extends BaseIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON));
         MvcResult getExisingBookResult = getExisingBookRequest.andExpect(status().isOk()).andReturn();
         String existingBookJson = getExisingBookResult.getResponse().getContentAsString();
-        BookDto existingBookDto = objectMapper.readValue(existingBookJson, BookDto.class);
+        BookWithDetailsDto existingBookDto = objectMapper.readValue(existingBookJson, BookWithDetailsDto.class);
         assertAll(
                 () -> assertThat(existingBookDto).isNotNull(),
                 () -> {
                     assert existingBookDto != null;
-                    assertThat(existingBookDto.id()).isEqualTo(1L);
+                    assertThat(existingBookDto.book().id()).isEqualTo(1L);
                 }
         );
 
