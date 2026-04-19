@@ -12,8 +12,8 @@
 
 API do zarządzania biblioteką, które umożliwia użytkownikom dodawanie, przeglądanie i edycję książek.
 Aplikacja korzysta z REST API, aby pobierać i wysyłać dane do bazy.
-W bazie danych są przechowywane jedynie identyfikatory oraz tytuły książek dodatkowe informacje o książkach są pobierane
-z [Open Library’s API](https://openlibrary.org/developers/api).
+W bazie danych są przechowywane jedynie identyfikatory oraz tytuły książek, a dodatkowe informacje o książkach są
+pobierane z [Open Library’s API](https://openlibrary.org/developers/api).
 
 Aplikacja uruchamia się na porcie `:8080` i udostępnia Swagger UI pod adresem `/swagger-ui/index.html`.
 
