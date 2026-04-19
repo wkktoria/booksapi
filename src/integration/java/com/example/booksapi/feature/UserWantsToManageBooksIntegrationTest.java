@@ -161,11 +161,11 @@ class UserWantsToManageBooksIntegrationTest extends BaseIntegrationTest {
                 },
                 () -> {
                     assert existingBookDto != null;
-                    assertThat(existingBookDto.details().authorName().contains("Robert C. Marting"));
+                    assertThat(existingBookDto.details().authorName()).containsExactly("Robert C. Martin");
                 },
                 () -> {
                     assert existingBookDto != null;
-                    assertThat(existingBookDto.details().firstPublishYear().equals(2008));
+                    assertThat(existingBookDto.details().firstPublishYear()).isEqualTo(2008);
                 }
         );
 
