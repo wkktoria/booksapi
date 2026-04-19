@@ -2,9 +2,12 @@ package com.example.booksapi.domain.bookcrud;
 
 import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
+import com.example.booksapi.domain.bookcrud.dto.BookWithDetailsDto;
 import com.example.booksapi.domain.bookcrud.dto.CreateBookRequestDto;
 import com.example.booksapi.domain.bookcrud.dto.DeleteBookResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.UpdateBookRequestDto;
+import com.example.booksapi.domain.bookinfofetcher.BookInfoFetchable;
+import com.example.booksapi.domain.bookinfofetcher.dto.BookInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,7 @@ public class BookCrudFacade {
     private final BookRetriever bookRetriever;
     private final BookUpdater bookUpdater;
     private final BookDeleter bookDeleter;
+    private final BookInfoFetchable bookInfoClient;
 
     public BookDto createBook(final CreateBookRequestDto requestDto) {
         Book createdBook = bookAdder.addBook(requestDto.title());
@@ -40,9 +44,13 @@ public class BookCrudFacade {
                 .build();
     }
 
-    public BookDto findBookById(final Long id) {
+    public BookWithDetailsDto findBookById(final Long id) {
         Book book = bookRetriever.retrieveById(id);
-        return mapFromBookToBookDto(book);
+        BookInfoDto bookInfoDto = bookInfoClient.fetchInfo(book.getTitle());
+        return BookWithDetailsDto.builder()
+                .book(mapFromBookToBookDto(book))
+                .details(bookInfoDto)
+                .build();
     }
 
     public BookDto updateBook(final Long id, final UpdateBookRequestDto requestDto) {

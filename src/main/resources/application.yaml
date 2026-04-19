@@ -21,3 +21,10 @@ auth:
     secret: ${JWT_SECRET:3f46afdd68a5ccef651212f60986f1a8bd918d582eca67e15ddd1d4e7620b24a}
     expiration-days: 30
     issuer: booksapi
+booksapi:
+  http:
+    client:
+      config:
+        connection-timeout: 5000
+        read-timeout: 5000
+        uri: https://openlibrary.org/search.json

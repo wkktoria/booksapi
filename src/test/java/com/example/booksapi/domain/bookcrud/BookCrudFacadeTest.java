@@ -2,6 +2,7 @@ package com.example.booksapi.domain.bookcrud;
 
 import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
+import com.example.booksapi.domain.bookcrud.dto.BookWithDetailsDto;
 import com.example.booksapi.domain.bookcrud.dto.CreateBookRequestDto;
 import com.example.booksapi.domain.bookcrud.dto.UpdateBookRequestDto;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,8 @@ class BookCrudFacadeTest {
             new BookAdder(bookRepository, bookRetriever),
             bookRetriever,
             new BookUpdater(bookRetriever),
-            new BookDeleter(bookRetriever, bookRepository)
+            new BookDeleter(bookRetriever, bookRepository),
+            new BookInfoFetcherTestImpl()
     );
 
     @Test
@@ -104,12 +106,12 @@ class BookCrudFacadeTest {
         BookDto bookDto = bookCrudFacade.createBook(requestDto);
 
         // when
-        BookDto responseBookDto = bookCrudFacade.findBookById(bookDto.id());
+        BookWithDetailsDto responseBookDto = bookCrudFacade.findBookById(bookDto.id());
 
         // then
         assertThat(responseBookDto).isNotNull();
-        assertThat(responseBookDto.id()).isEqualTo(bookDto.id());
-        assertThat(responseBookDto.title()).isEqualTo(bookDto.title());
+        assertThat(responseBookDto.book().id()).isEqualTo(bookDto.id());
+        assertThat(responseBookDto.book().title()).isEqualTo(bookDto.title());
     }
 
     @Test

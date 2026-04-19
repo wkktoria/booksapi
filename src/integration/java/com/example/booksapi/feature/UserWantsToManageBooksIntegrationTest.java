@@ -3,9 +3,12 @@ package com.example.booksapi.feature;
 import com.example.booksapi.BaseIntegrationTest;
 import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
+import com.example.booksapi.domain.bookcrud.dto.BookWithDetailsDto;
 import com.example.booksapi.domain.userregister.dto.RegisterResponseDto;
 import com.example.booksapi.infrastructure.security.jwt.dto.TokenResponseDto;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -125,17 +128,44 @@ class UserWantsToManageBooksIntegrationTest extends BaseIntegrationTest {
         assertThat(twoBooks.containsAll(Set.of(expectedFirstBook, expectedSecondBook)));
 
         // Step 9: User makes GET /books/1 request with valid JWT and system returns book info (id=1) and returns 200 OK.
+        wireMockServer.stubFor(WireMock.get(WireMock.urlPathEqualTo("/"))
+                .withQueryParam("q", WireMock.equalTo("Clean Code"))
+                .withQueryParam("limit", WireMock.equalTo("1"))
+                .willReturn(WireMock.aResponse()
+                        .withStatus(HttpStatus.OK.value())
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("""
+                                {
+                                    "docs": [
+                                        {
+                                            "author_name": [
+                                                "Robert C. Martin"
+                                            ],
+                                            "first_publish_year": 2008
+                                        }
+                                    ]
+                                }
+                                """)));
+
         ResultActions getExisingBookRequest = mockMvc.perform(get("/books/1")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON));
         MvcResult getExisingBookResult = getExisingBookRequest.andExpect(status().isOk()).andReturn();
         String existingBookJson = getExisingBookResult.getResponse().getContentAsString();
-        BookDto existingBookDto = objectMapper.readValue(existingBookJson, BookDto.class);
+        BookWithDetailsDto existingBookDto = objectMapper.readValue(existingBookJson, BookWithDetailsDto.class);
         assertAll(
                 () -> assertThat(existingBookDto).isNotNull(),
                 () -> {
                     assert existingBookDto != null;
-                    assertThat(existingBookDto.id()).isEqualTo(1L);
+                    assertThat(existingBookDto.book().id()).isEqualTo(1L);
+                },
+                () -> {
+                    assert existingBookDto != null;
+                    assertThat(existingBookDto.details().authorName().contains("Robert C. Marting"));
+                },
+                () -> {
+                    assert existingBookDto != null;
+                    assertThat(existingBookDto.details().firstPublishYear().equals(2008));
                 }
         );
 

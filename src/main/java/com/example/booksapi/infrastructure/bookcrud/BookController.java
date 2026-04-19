@@ -3,6 +3,7 @@ package com.example.booksapi.infrastructure.bookcrud;
 import com.example.booksapi.domain.bookcrud.BookCrudFacade;
 import com.example.booksapi.domain.bookcrud.dto.AllBooksResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.BookDto;
+import com.example.booksapi.domain.bookcrud.dto.BookWithDetailsDto;
 import com.example.booksapi.domain.bookcrud.dto.CreateBookRequestDto;
 import com.example.booksapi.domain.bookcrud.dto.DeleteBookResponseDto;
 import com.example.booksapi.domain.bookcrud.dto.UpdateBookRequestDto;
@@ -38,9 +39,9 @@ class BookController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<BookDto> getBookById(@PathVariable final Long id) {
+    ResponseEntity<BookWithDetailsDto> getBookById(@PathVariable final Long id) {
         log.info("Received HTTP request to get book by id: {}", id);
-        BookDto bookDto = bookCrudFacade.findBookById(id);
+        BookWithDetailsDto bookDto = bookCrudFacade.findBookById(id);
         return ResponseEntity.ok(bookDto);
     }
 
