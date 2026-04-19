@@ -145,7 +145,7 @@ class UserWantsToManageBooksIntegrationTest extends BaseIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON));
         MvcResult getNonExistingBookResult = getNonExistingBookRequest.andExpect(status().isNotFound()).andReturn();
         String getNonExistingBookJson = getNonExistingBookResult.getResponse().getContentAsString();
-        assertThat(getNonExistingBookJson).contains("not found");
+        assertThat(getNonExistingBookJson).contains("Not Found");
 
         // Step 11: User makes PUT /books/1 with valid JWT and JSON body and system returns updated book and 200 OK.
         ResultActions updateBookRequest = mockMvc.perform(put("/books/1")

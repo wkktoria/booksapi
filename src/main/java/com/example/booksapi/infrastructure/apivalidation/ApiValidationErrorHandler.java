@@ -21,8 +21,8 @@ class ApiValidationErrorHandler {
     @ResponseBody
     ApiValidationErrorDto handleUserExistsException(final UserExistsException exception) {
         return ApiValidationErrorDto.builder()
-                .message(exception.getMessage())
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
                 .build();
     }
 
@@ -31,8 +31,8 @@ class ApiValidationErrorHandler {
     @ResponseBody
     ApiValidationErrorDto handleUserNotFoundException(final UserNotFoundException exception) {
         return ApiValidationErrorDto.builder()
-                .message(exception.getMessage())
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
                 .build();
     }
 
@@ -41,8 +41,8 @@ class ApiValidationErrorHandler {
     @ResponseBody
     ApiValidationErrorDto handleBookExistsException(final BookExistsException exception) {
         return ApiValidationErrorDto.builder()
-                .message(exception.getMessage())
-                .status(HttpStatus.CONFLICT)
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
                 .build();
     }
 
@@ -51,8 +51,8 @@ class ApiValidationErrorHandler {
     @ResponseBody
     ApiValidationErrorDto handleBookNotFoundException(final BookNotFoundException exception) {
         return ApiValidationErrorDto.builder()
-                .message(exception.getMessage())
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
                 .build();
     }
 
@@ -68,8 +68,8 @@ class ApiValidationErrorHandler {
                 .toList();
 
         return ApiValidationErrorDto.builder()
-                .message("Validation failed")
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .errors(errors)
                 .build();
     }
