@@ -28,6 +28,7 @@
     </scm>
     <properties>
         <java.version>21</java.version>
+        <wiremock-standalone.version>3.13.1</wiremock-standalone.version>
     </properties>
     <dependencies>
         <dependency>
@@ -112,6 +113,13 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
             <version>1.21.4</version>
+            <scope>test</scope>
+        </dependency>
+        <!--WIREMOCK-->
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <version>${wiremock-standalone.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
