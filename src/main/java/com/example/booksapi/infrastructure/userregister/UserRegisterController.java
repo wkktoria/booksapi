@@ -25,7 +25,7 @@ class UserRegisterController {
 
     @PostMapping
     ResponseEntity<RegisterResponseDto> register(@RequestBody @Valid final RegisterRequestDto requestDto) {
-        log.info("Received HTTP request to register user: {}", requestDto);
+        log.info("Received HTTP request to register user with uesrname={}", requestDto.username());
         final String username = requestDto.username();
         final String password = passwordEncoder.encode(requestDto.password());
         RegisterResponseDto responseDto = userRegisterFacade.register(RegisterRequestDto.builder()
