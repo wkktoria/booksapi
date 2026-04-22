@@ -8,3 +8,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-user}
       POSTGRES_DB: ${POSTGRES_DB:-books}
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--appendonly", "yes" ]
