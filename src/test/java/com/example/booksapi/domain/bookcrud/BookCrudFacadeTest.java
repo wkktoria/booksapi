@@ -57,6 +57,25 @@ class BookCrudFacadeTest {
     }
 
     @Test
+    void should_throw_exception_when_updating_to_existing_tile() {
+        // given
+        String title = "Book";
+        CreateBookRequestDto requestDto = CreateBookRequestDto.builder()
+                .title(title)
+                .build();
+        bookCrudFacade.createBook(requestDto);
+
+        // when
+        Throwable throwable = catchThrowable(() -> bookCrudFacade.updateBook(1L, UpdateBookRequestDto.builder()
+                .title(title)
+                .build()));
+
+        // then
+        assertThat(throwable).isInstanceOf(BookExistsException.class)
+                .hasMessageContaining("exists");
+    }
+
+    @Test
     void should_return_empty_set_when_no_books_saved() {
         // given
 

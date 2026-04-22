@@ -14,6 +14,11 @@ class BookUpdater {
 
     @Transactional
     Book update(final Long id, final String title) {
+        if (bookRetriever.existsByTitle(title)) {
+            log.warn("Could not update book - book with title='{}' already exists", title);
+            throw new BookExistsException("Book with the given title already exists");
+        }
+
         Book bookToUpdate = bookRetriever.retrieveById(id);
         bookToUpdate.setTitle(title);
         return bookToUpdate;
