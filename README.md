@@ -26,7 +26,7 @@ Wymagania:
 - Java 21+
 - Maven
 
-Uruchomienie bazy danych i Redis:
+Uruchomienie PostgreSQL i Redis:
 
 ```shell
 docker compose up -d
