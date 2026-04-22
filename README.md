@@ -14,6 +14,7 @@ API do zarządzania biblioteką, które umożliwia użytkownikom dodawanie, prze
 Aplikacja korzysta z REST API, aby pobierać i wysyłać dane do bazy.
 W bazie danych są przechowywane jedynie identyfikatory oraz tytuły książek, a dodatkowe informacje o książkach są
 pobierane z [Open Library’s API](https://openlibrary.org/developers/api).
+Odpowiedzi z zewnętrznego API są zapisywane w pamięci podręcznej (Redis).
 
 Aplikacja uruchamia się na porcie `:8080` i udostępnia Swagger UI pod adresem `/swagger-ui/index.html`.
 
@@ -25,7 +26,7 @@ Wymagania:
 - Java 21+
 - Maven
 
-Uruchomienie bazy danych:
+Uruchomienie bazy danych i Redis:
 
 ```shell
 docker compose up -d
@@ -69,6 +70,7 @@ Uruchomienie API:
 - Lombok
 - Swagger
 - Docker
+- Redis
 
 ## Scenariusz
 

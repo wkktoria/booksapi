@@ -16,6 +16,15 @@ spring:
     enabled: true
     locations: classpath:db.migration/general,classpath:db.migration/inserts
     schemas: public
+  cache:
+    type: redis
+    redis:
+      time-to-live: 1h
+      cache-null-values: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 auth:
   jwt:
     secret: ${JWT_SECRET:3f46afdd68a5ccef651212f60986f1a8bd918d582eca67e15ddd1d4e7620b24a}

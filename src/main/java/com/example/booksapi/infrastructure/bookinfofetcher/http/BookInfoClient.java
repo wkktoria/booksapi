@@ -4,6 +4,7 @@ import com.example.booksapi.domain.bookinfofetcher.BookInfoFetchable;
 import com.example.booksapi.domain.bookinfofetcher.dto.BookInfoDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,6 +25,7 @@ public class BookInfoClient implements BookInfoFetchable {
     private final int limit;
     private final List<String> fields;
 
+    @Cacheable(value = "bookInfo", key = "#title.toLowerCase().trim()", unless = "#result == null")
     @Override
     public BookInfoDto fetchInfo(final String title) {
         log.info("Fetching book info");
