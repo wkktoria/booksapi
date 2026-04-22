@@ -22,7 +22,7 @@ public class BookInfoHttpClientConfig {
     @Bean
     public BookInfoFetchable remoteBookInfoClient(final RestTemplate restTemplate,
                                                   final HttpClientConfigurationProperties properties) {
-        return new BookInfoClient(restTemplate, properties.uri());
+        return new BookInfoClient(restTemplate, properties.uri(), properties.limit(), properties.fields());
     }
 
 }

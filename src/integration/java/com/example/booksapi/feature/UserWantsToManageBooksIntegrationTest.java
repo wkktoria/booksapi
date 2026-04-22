@@ -133,6 +133,7 @@ class UserWantsToManageBooksIntegrationTest extends BaseIntegrationTest {
         wireMockServer.stubFor(WireMock.get(WireMock.urlPathEqualTo("/"))
                 .withQueryParam("q", WireMock.equalTo("Clean Code"))
                 .withQueryParam("limit", WireMock.equalTo("1"))
+                .withQueryParam("fields", WireMock.equalTo("author_name,first_publish_year,isbn"))
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeader("Content-Type", "application/json")
