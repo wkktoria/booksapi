@@ -34,6 +34,7 @@ public class UserRegisterFacade {
                 .username(requestDto.username())
                 .password(requestDto.password())
                 .authorities(List.of(DEFAULT_USER_ROLE))
+                .enabled(true)
                 .build();
         User savedUser = userRepository.save(user);
 
