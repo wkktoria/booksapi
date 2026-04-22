@@ -28,3 +28,8 @@ booksapi:
         connection-timeout: 5000
         read-timeout: 5000
         uri: https://openlibrary.org/search.json
+        limit: 1
+        fields:
+          - author_name
+          - first_publish_year
+          - isbn

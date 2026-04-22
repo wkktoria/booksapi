@@ -13,12 +13,16 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Log4j2
 public class BookInfoClient implements BookInfoFetchable {
 
     private final RestTemplate restTemplate;
     private final String uri;
+    private final int limit;
+    private final List<String> fields;
 
     @Override
     public BookInfoDto fetchInfo(final String title) {
@@ -26,7 +30,8 @@ public class BookInfoClient implements BookInfoFetchable {
         HttpHeaders headers = new org.springframework.http.HttpHeaders();
         final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
         try {
-            final String url = uri + "?q=" + title + "&limit=1";
+            final String fieldsParam = String.join(",", fields);
+            final String url = uri + "?q=" + title + "&limit=" + limit + "&fields=" + fieldsParam;
             ResponseEntity<BookInfoWrapperDto> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
                     BookInfoWrapperDto.class);
             final BookInfoWrapperDto body = response.getBody();
