@@ -13,6 +13,9 @@ public record BookInfoDto(
         List<String> authorName,
 
         @JsonProperty("first_publish_year")
-        Integer firstPublishYear
+        Integer firstPublishYear,
+
+        @JsonProperty("isbn")
+        List<String> isbn
 ) {
 }

@@ -26,7 +26,7 @@ public class BookInfoClient implements BookInfoFetchable {
         HttpHeaders headers = new org.springframework.http.HttpHeaders();
         final HttpEntity<HttpHeaders> requestEntity = new HttpEntity<>(headers);
         try {
-            final String url = uri + "?q=" + title + "&limit=1";
+            final String url = uri + "?q=" + title + "&limit=1&fields=author_name,first_publish_year,isbn";
             ResponseEntity<BookInfoWrapperDto> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
                     BookInfoWrapperDto.class);
             final BookInfoWrapperDto body = response.getBody();

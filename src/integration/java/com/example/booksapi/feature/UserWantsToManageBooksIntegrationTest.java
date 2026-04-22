@@ -17,6 +17,8 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -141,7 +143,12 @@ class UserWantsToManageBooksIntegrationTest extends BaseIntegrationTest {
                                             "author_name": [
                                                 "Robert C. Martin"
                                             ],
-                                            "first_publish_year": 2008
+                                            "first_publish_year": 2008,
+                                            "isbn": [
+                                                "9639637696",
+                                                "9782326002272",
+                                                "8328302349"
+                                            ]
                                         }
                                     ]
                                 }
@@ -154,19 +161,13 @@ class UserWantsToManageBooksIntegrationTest extends BaseIntegrationTest {
         String existingBookJson = getExisingBookResult.getResponse().getContentAsString();
         BookWithDetailsDto existingBookDto = objectMapper.readValue(existingBookJson, BookWithDetailsDto.class);
         assertAll(
-                () -> assertThat(existingBookDto).isNotNull(),
-                () -> {
-                    assert existingBookDto != null;
-                    assertThat(existingBookDto.book().id()).isEqualTo(1L);
-                },
-                () -> {
-                    assert existingBookDto != null;
-                    assertThat(existingBookDto.details().authorName()).containsExactly("Robert C. Martin");
-                },
-                () -> {
-                    assert existingBookDto != null;
-                    assertThat(existingBookDto.details().firstPublishYear()).isEqualTo(2008);
-                }
+                () -> assertNotNull(existingBookDto),
+                () -> assertNotNull(existingBookDto.book()),
+                () -> assertThat(existingBookDto.book().id()).isEqualTo(1L),
+                () -> assertThat(existingBookDto.details().authorName()).containsExactly("Robert C. Martin"),
+                () -> assertThat(existingBookDto.details().firstPublishYear()).isEqualTo(2008),
+                () -> assertThat(existingBookDto.details().isbn())
+                        .containsExactlyInAnyOrder("9639637696", "9782326002272", "8328302349")
         );
 
         // Step 10: User makes GET /books/999 with valid JWT and system returns 404 Not Found.
